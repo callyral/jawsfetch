@@ -1,0 +1,16 @@
+jawfetch
+--------
+shark-themed fetch program written in rust
+
+FEATURES
+* ascii
+* distro name (/etc/os-release)
+* kernel version (/proc/version)
+* xdg session
+* shell
+
+TODO
+* package amount
+* uptime
+* add a file to customize output order
+* add ascii file
