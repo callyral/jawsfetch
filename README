@@ -9,8 +9,8 @@ FEATURES
 * xdg session
 * shell
 * uptime
+* ascii file (xdg-config/jawsfetch/ascii)
 
 TODO
 * add a file to customize output order
-* add ascii file
 * package amount

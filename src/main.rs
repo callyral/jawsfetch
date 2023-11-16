@@ -1,4 +1,5 @@
 use jawsfetch::read_nth_line_from_file;
+use jawsfetch::read_config_file;
 use jawsfetch::module;
 
 module!(color);
@@ -10,6 +11,7 @@ module!(uptime);
 //module!(package_n);
 
 use std::env;
+use std::path::Path;
 use clap::Parser;
 
 fn main() {
@@ -53,11 +55,13 @@ fn print_info(key: InfoKey, options: Options) {
 }
 
 fn print_ascii(color: Color) {
-    println!(r"{}      .
+    let ascii: String = read_config_file("ascii")
+        .unwrap_or(r"      .
 \_____)\_____
 /--v____ __`<
         )/
-        '{}", color, Color::Default);
+        '".to_string() + "\n");
+    print!(r"{}{}{}", color, ascii, Color::Default);
 }
 
 fn print_distro(color: Color) {
