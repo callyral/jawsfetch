@@ -8,7 +8,7 @@ module!(info_key);
 module!(arguments);
 
 module!(uptime);
-//module!(package_n);
+module!(package_n);
 
 use std::env;
 use clap::Parser;
@@ -60,7 +60,7 @@ fn print_info(key: InfoKey, options: Options) {
         InfoKey::Session => print_session(color),
         InfoKey::Shell => print_shell(color),
         InfoKey::Uptime => print_uptime(color),
-        //InfoKey::Packages => print_package_number(color),
+        InfoKey::Packages => print_package_number(color),
         _ => ()
     };
 }

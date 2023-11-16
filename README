@@ -7,9 +7,10 @@ keys:
 * ascii
 * distro name (/etc/os-release)
 * kernel version (/proc/version)
-* xdg session
+* package amount
 * shell
 * uptime
+* xdg session
 config:
 * ascii file (xdg-config/jawsfetch/ascii)
 * order file (xdg-config/jawsfetch/order)
@@ -35,8 +36,9 @@ HELP
       -h, --help           Print help
 
 TODO
-* package amount
+* support for dnf package amount (fedora, rhel)
 * file config for things like color, no boldness, etc.
+    for now these are configured using command-line arguments only
 
 USED CRATES
 * clap
