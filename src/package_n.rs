@@ -39,7 +39,7 @@ fn get_package_number() -> usize {
         .expect("Failed to start wc -l process");
     let package_output = package_spawned2.wait_with_output().expect("Failed to wait for wc -l output");
     let package_u8s = package_output.stdout.as_slice();
-    let package_string = str::from_utf8(package_u8s).unwrap();
+    let package_string = str::from_utf8(package_u8s).expect("Failed to turn byte array into string");
 
     package_string.trim().parse::<usize>().expect("Unable to parse package number")
 }
