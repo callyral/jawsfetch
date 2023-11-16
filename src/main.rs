@@ -1,20 +1,15 @@
 use jawsfetch::read_nth_line_from_file;
+use jawsfetch::module;
 
-mod color;
-use color::Color;
+module!(color);
+module!(options);
+module!(info_key);
+module!(arguments);
 
-mod options;
-use options::*;
-
-mod info_key;
-use info_key::InfoKey;
-
-mod arguments;
-use arguments::*;
+module!(uptime);
+//module!(package_n);
 
 use std::env;
-use std::process::Command;
-
 use clap::Parser;
 
 fn main() {
@@ -39,7 +34,7 @@ fn main() {
     info_order.iter().for_each(|k| print_info(*k, options));
 }
 
-fn print_info(key: InfoKey, options: Options) -> () {
+fn print_info(key: InfoKey, options: Options) {
     let color =
         match options.bold {
             true => options.color.as_bold(),
@@ -51,11 +46,13 @@ fn print_info(key: InfoKey, options: Options) -> () {
         InfoKey::Kernel => print_kernel(options.kernel_options, color),
         InfoKey::Session => print_session(color),
         InfoKey::Shell => print_shell(color),
+        InfoKey::Uptime => print_uptime(color),
+        //InfoKey::Packages => print_package_number(color),
         _ => ()
     };
 }
 
-fn print_ascii(color: Color) -> () {
+fn print_ascii(color: Color) {
     println!(r"{}      .
 \_____)\_____
 /--v____ __`<
@@ -63,7 +60,7 @@ fn print_ascii(color: Color) -> () {
         '{}", color, Color::Default);
 }
 
-fn print_distro(color: Color) -> () {
+fn print_distro(color: Color) {
     let distro_file_path: &str = "/etc/os-release";
     let distro_line = read_nth_line_from_file(0, distro_file_path);
     let distro_tokens: Vec<&str> = distro_line.split("=").collect();
@@ -77,7 +74,7 @@ fn print_distro(color: Color) -> () {
     println!("{}{}{}{}", color, InfoKey::Distro.as_str(), Color::Default, distro_name);
 }
 
-fn print_kernel(options: KernelOptions, color: Color) -> () {
+fn print_kernel(options: KernelOptions, color: Color) {
     if !options.shorten {
         println!("{}{}{}{}", color, InfoKey::Kernel.as_str(), Color::Default, read_nth_line_from_file(0, "/proc/version"));
         return;
@@ -91,7 +88,7 @@ fn print_kernel(options: KernelOptions, color: Color) -> () {
     println!();
 }
 
-fn print_session(color: Color) -> () {
+fn print_session(color: Color) {
     let session: String =
         if env::var("XDG_CURRENT_DESKTOP").is_ok() {
             env::var("XDG_CURRENT_DESKTOP")
@@ -101,7 +98,7 @@ fn print_session(color: Color) -> () {
     println!("{}{}{}{}", color, InfoKey::Session.as_str(), Color::Default, session);
 }
 
-fn print_shell(color: Color) -> () {
+fn print_shell(color: Color) {
     let shell: String =
         if env::var("SHELL").is_ok() {
             env::var("SHELL").unwrap()

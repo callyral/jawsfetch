@@ -8,9 +8,9 @@ FEATURES
 * kernel version (/proc/version)
 * xdg session
 * shell
+* uptime
 
 TODO
-* package amount
-* uptime
 * add a file to customize output order
 * add ascii file
+* package amount
