@@ -1,16 +1,43 @@
 jawsfetch
 --------
-shark-themed fetch program written in rust
+shark-themed (by default) fetch program written in rust
 
 FEATURES
+keys:
 * ascii
 * distro name (/etc/os-release)
 * kernel version (/proc/version)
 * xdg session
 * shell
 * uptime
+config:
 * ascii file (xdg-config/jawsfetch/ascii)
+* order file (xdg-config/jawsfetch/order)
+
+CONFIG
+* ascii file: plaintext
+* order file
+    each line is a key. a key can be: ascii, distro, kernel, session, shell, packages*, or uptime
+    *packages does nothing for now since it's not implemented yet (see: TODO)
+    example:
+        ascii
+        session
+        shell
+        ascii
+
+HELP
+    Usage: jawsfetch [OPTIONS]
+
+    Options:
+      -c, --color <COLOR>  Select color [default: blue]
+      -n, --no-bold        Disable bold colors
+      -k, --kernel-long    Long kernel version
+      -h, --help           Print help
 
 TODO
-* add a file to customize output order
 * package amount
+* file config for things like color, no boldness, etc.
+
+USED CRATES
+* clap
+    argument parsing

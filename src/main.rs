@@ -11,7 +11,6 @@ module!(uptime);
 //module!(package_n);
 
 use std::env;
-use std::path::Path;
 use clap::Parser;
 
 fn main() {
@@ -24,16 +23,28 @@ fn main() {
         }
     };
 
-    let info_order: Vec<InfoKey> =
-        vec![InfoKey::Ascii,
-             InfoKey::Distro,
-             InfoKey::Kernel,
-             InfoKey::Session,
-             InfoKey::Shell,
-             InfoKey::Packages,
-             InfoKey::Uptime];
+    let info_order: Vec<InfoKey> = get_info_order();
 
     info_order.iter().for_each(|k| print_info(*k, options));
+}
+
+fn get_info_order() -> Vec<InfoKey> {
+    let order_file_contents = read_config_file("order");
+    match order_file_contents {
+        Some(contents) => {
+            let custom: Vec<InfoKey> = contents.lines().map(|line| InfoKey::from_order_key(line)).collect();
+            return custom;
+        },
+        None => ()
+    }
+
+    return vec![InfoKey::Ascii,
+                InfoKey::Distro,
+                InfoKey::Kernel,
+                InfoKey::Session,
+                InfoKey::Shell,
+                InfoKey::Packages,
+                InfoKey::Uptime]
 }
 
 fn print_info(key: InfoKey, options: Options) {

@@ -36,8 +36,8 @@ impl InfoKey {
         }
     }
 
-    pub fn from_order_str(&self, string: &str) -> InfoKey {
-        match string {
+    pub fn from_order_key<S: AsRef<str>>(string: S) -> InfoKey {
+        match string.as_ref() {
            "ascii"    => InfoKey::Ascii,
            "distro"   => InfoKey::Distro,
            "kernel"   => InfoKey::Kernel,
