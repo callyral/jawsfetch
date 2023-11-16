@@ -1,4 +1,4 @@
-use jawfetch::*;
+use jawsfetch::read_nth_line_from_file;
 
 mod color;
 use color::Color;
@@ -13,6 +13,7 @@ mod arguments;
 use arguments::*;
 
 use std::env;
+use std::process::Command;
 
 use clap::Parser;
 
