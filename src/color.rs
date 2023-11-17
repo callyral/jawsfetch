@@ -1,6 +1,7 @@
 use std::fmt;
+use phf::phf_map;
 
-#[derive (Clone, Copy)]
+#[derive (Clone, Copy, Eq, PartialEq)]
 pub enum Color {
     Black,
     Red,
@@ -25,33 +26,61 @@ pub enum Color {
 }
 
 impl Color {
+    const TRANSLATION: phf::Map<&'static str, Color> = phf_map! {
+        "black"   => Color::Black,
+        "red"     => Color::Red,
+        "green"   => Color::Green,
+        "yellow"  => Color::Yellow,
+        "blue"    => Color::Blue,
+        "magenta" => Color::Magenta,
+        "cyan"    => Color::Cyan,
+        "white"   => Color::White,
+        "default" => Color::Default,
+        "reset"   => Color::Reset,
+        "bold_black"   => Color::BoldBlack,
+        "bold_red"     => Color::BoldRed,
+        "bold_green"   => Color::BoldGreen,
+        "bold_yellow"  => Color::BoldYellow,
+        "bold_blue"    => Color::BoldBlue,
+        "bold_magenta" => Color::BoldMagenta,
+        "bold_cyan"    => Color::BoldCyan,
+        "bold_white"   => Color::BoldWhite,
+        "bold_default" => Color::BoldDefault,
+        "bold_reset"   => Color::BoldReset,
+    };
+
     pub fn as_bold(&self) -> Color {
         match self {
-            Color::Black => Color::BoldBlack,
-            Color::Red => Color::BoldRed,
-            Color::Green => Color::BoldGreen,
-            Color::Yellow => Color::BoldYellow,
-            Color::Blue => Color::BoldBlue,
+            Color::Black   => Color::BoldBlack,
+            Color::Red     => Color::BoldRed,
+            Color::Green   => Color::BoldGreen,
+            Color::Yellow  => Color::BoldYellow,
+            Color::Blue    => Color::BoldBlue,
             Color::Magenta => Color::BoldMagenta,
-            Color::Cyan => Color::BoldCyan,
-            Color::White => Color::BoldWhite,
+            Color::Cyan    => Color::BoldCyan,
+            Color::White   => Color::BoldWhite,
             Color::Default => Color::BoldDefault,
-            Color::Reset => Color::BoldReset,
+            Color::Reset   => Color::BoldReset,
             _ => *self
         }
     }
 
-    pub fn from_str(string: &str) -> Color {
-        match &string.to_lowercase()[..] {
-            "black"   => Color::Black,
-            "red"     => Color::Red,
-            "green"   => Color::Green,
-            "yellow"  => Color::Yellow,
-            "blue"    => Color::Blue,
-            "magenta" => Color::Magenta,
-            "cyan"    => Color::Cyan,
-            "white"   => Color::White,
-            _ => Color::Default
+    pub fn as_str(&self) -> &str {
+        let t = Self::TRANSLATION;
+        for key in t.keys() {
+            let value = t.get(key);
+            if value.unwrap() == self {
+                return key;
+            }
+        }
+        return "";
+    }
+
+    pub fn from_string<S: AsRef<str>>(string: S) -> Color {
+        let t = Self::TRANSLATION;
+        match t.get(string.as_ref()) {
+            Some(&color) => color,
+            None => Color::Default
         }
     }
 }
