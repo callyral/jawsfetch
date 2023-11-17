@@ -113,8 +113,9 @@ impl fmt::Display for Color {
     }
 }
 
+#[cfg(test)]
 mod tests {
-    use crate::Color;
+    use super::*;
     #[test]
     fn as_bold() {
         assert_eq!(Color::Magenta.as_bold(), Color::BoldMagenta);
