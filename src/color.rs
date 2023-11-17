@@ -1,7 +1,7 @@
 use std::fmt;
 use phf::phf_map;
 
-#[derive (Clone, Copy, Eq, PartialEq)]
+#[derive (Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Color {
     Black,
     Red,
@@ -65,15 +65,16 @@ impl Color {
         }
     }
 
-    pub fn as_str(&self) -> &str {
+    pub fn as_str(&self) -> Option<&str> {
         let t = Self::TRANSLATION;
         for key in t.keys() {
             let value = t.get(key);
+            // Unwrap used because `key` known to be a valid dictionary key
             if value.unwrap() == self {
-                return key;
+                return Some(key);
             }
         }
-        return "";
+        return None;
     }
 
     pub fn from_string<S: AsRef<str>>(string: S) -> Color {
@@ -109,5 +110,19 @@ impl fmt::Display for Color {
             Color::BoldDefault => write!(f, "\x1b[1;39m"),
             Color::BoldReset   => write!(f, "\x1b[1;0m"),
         }
+    }
+}
+
+mod tests {
+    use crate::Color;
+    #[test]
+    fn as_bold() {
+        assert_eq!(Color::Magenta.as_bold(), Color::BoldMagenta);
+        assert_eq!(Color::BoldCyan.as_bold(), Color::BoldCyan);
+    }
+
+    #[test]
+    fn as_str() {
+        assert_eq!(Color::Blue.as_str(), Some("blue"));
     }
 }

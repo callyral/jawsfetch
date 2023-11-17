@@ -1,5 +1,5 @@
-use crate::color::Color;
-use crate::info_key::InfoKey;
+use crate::Color;
+use crate::InfoKey;
 
 use std::process::{Command, Stdio};
 use std::str;

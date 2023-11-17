@@ -4,7 +4,7 @@ use clap::Parser;
 #[derive (Parser, Debug)]
 pub struct Arguments {
     /// Select color
-    #[arg(short, long, default_value_t = String::from(Color::Blue.as_str()))]
+    #[arg(short, long, default_value_t = String::from(Color::Blue.as_str().unwrap()))]
     pub color: String,
 
     /// Disable bold colors

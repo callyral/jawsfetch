@@ -1,6 +1,6 @@
 use crate::read_nth_line_from_file;
-use crate::color::Color;
-use crate::info_key::InfoKey;
+use crate::Color;
+use crate::InfoKey;
 
 pub fn print_uptime(color: Color) {
     let uptime_file_path: &str = "/proc/uptime";
