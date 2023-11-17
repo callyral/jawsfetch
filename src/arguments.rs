@@ -1,4 +1,4 @@
-use crate::color::Color;
+use crate::Color;
 use clap::Parser;
 
 #[derive (Parser, Debug)]
