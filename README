@@ -37,6 +37,7 @@ HELP
 
 TODO
 * support for dnf package amount (fedora, rhel)
+* clean up package amount code so it is easier to follow
 * file config for things like color, no boldness, etc.
     for now these are configured using command-line arguments only
 
