@@ -3,12 +3,12 @@ use jawsfetch::read_config_file;
 use jawsfetch::module;
 
 module!(color);
-module!(options);
 module!(info_key);
 module!(arguments);
 
-module!(uptime);
+module!(kernel);
 module!(package_n);
+module!(uptime);
 
 use std::env;
 use clap::Parser;
@@ -87,20 +87,6 @@ fn print_distro(color: Color) {
         .expect("Unable to strip end-quote from distro name");
 
     println!("{}{}{}{}", color, InfoKey::Distro.as_str(), Color::Default, distro_name);
-}
-
-fn print_kernel(options: KernelOptions, color: Color) {
-    if !options.shorten {
-        println!("{}{}{}{}", color, InfoKey::Kernel.as_str(), Color::Default, read_nth_line_from_file(0, "/proc/version"));
-        return;
-    }
-
-    let kernel_line = read_nth_line_from_file(0, "/proc/version");
-    let kernel_tokens: Vec<&str> = kernel_line.split(" ").collect();
-
-    print!("{}{}{}", color, InfoKey::Kernel.as_str(), Color::Default);
-    kernel_tokens[0..3].iter().for_each(|str| print!("{} ", str));
-    println!();
 }
 
 fn print_session(color: Color) {
