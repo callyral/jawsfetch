@@ -18,8 +18,7 @@ config:
 CONFIG
 * ascii file: plaintext
 * order file
-    each line is a key. a key can be: ascii, distro, kernel, session, shell, packages*, or uptime
-    *packages does nothing for now since it's not implemented yet (see: TODO)
+    each line is a key. a key can be: ascii, distro, kernel, session, shell, packages, or uptime
     example:
         ascii
         session
