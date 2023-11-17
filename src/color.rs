@@ -69,7 +69,7 @@ impl Color {
         let t = Self::TRANSLATION;
         for key in t.keys() {
             let value = t.get(key);
-            // Unwrap used because `key` known to be a valid dictionary key
+            // Unwrap used because `key` is known to be a valid dictionary key
             if value.unwrap() == self {
                 return Some(key);
             }

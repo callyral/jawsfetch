@@ -19,7 +19,7 @@ fn main() {
         color: Color::from_string(args.color.as_str()),
         bold: !args.no_bold,
         kernel_options: KernelOptions {
-            shorten: !args.kernel_long
+            long: args.kernel_long
         }
     };
 
