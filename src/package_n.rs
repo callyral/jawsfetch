@@ -36,7 +36,7 @@ fn get_package_number() -> usize {
         .stdin(Stdio::from(package_spawned1_out))
         .stdout(Stdio::piped())
         .spawn()
-        .expect("Failed to start wc -l process");
+        .expect("Failed to start process: wc -l");
     let package_output = package_spawned2.wait_with_output().expect("Failed to wait for wc -l output");
     let package_u8s = package_output.stdout.as_slice();
     let package_string = str::from_utf8(package_u8s).expect("Failed to turn byte array into string");
