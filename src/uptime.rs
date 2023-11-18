@@ -5,15 +5,23 @@ use crate::InfoKey;
 fn format_seconds(raw_seconds: f32) -> String {
     // During conversion, out-of-range values are saturated and NaN is zero. I believe this is
     // acceptable for this use case.
-    let minutes: usize = (raw_seconds / 60.) as usize;
     let seconds: usize = (raw_seconds % 60.) as usize;
+    let minutes: usize = (raw_seconds / 60. % 60.) as usize;
+    let hours: usize   = (raw_seconds / 60. / 60.) as usize;
 
-    match seconds {
-        0 => format!("{}m", minutes),
-        _ => {
-            match minutes {
-                0 => format!("{}s", seconds),
-                _ => format!("{}m {}s", minutes, seconds),
+    match hours {
+        0 => match minutes {
+            0 => format!("{}s", seconds),
+            _ => match seconds {
+                0 => format!("{}m", minutes),
+                _ => format!("{}m {}s", minutes, seconds)
+            }
+        }
+        _ => match minutes {
+            0 => format!("{}h {}s", hours, seconds),
+            _ => match seconds {
+                0 => format!("{}h {}m", hours, minutes),
+                _ => format!("{}h {}m {}s", hours, minutes, seconds)
             }
         }
     }
