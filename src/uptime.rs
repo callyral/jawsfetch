@@ -36,5 +36,5 @@ pub fn print_uptime(color: Color) {
 
     let uptime_string: String = format_seconds(raw_seconds);
 
-    println!("{}{}{}{}", color, InfoKey::Uptime.as_str(), Color::Default, uptime_string);
+    println!("{}{}{}{}", color, InfoKey::Uptime, Color::Default, uptime_string);
 }

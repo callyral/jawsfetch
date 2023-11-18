@@ -1,6 +1,7 @@
+use std::fmt;
+
 #[derive (Clone, Copy)]
 pub enum InfoKey {
-    Invalid,
     Ascii,
     Distro,
     Kernel,
@@ -11,18 +12,6 @@ pub enum InfoKey {
 }
 
 impl InfoKey {
-    pub fn as_str(&self) -> &str {
-        match self {
-            InfoKey::Distro   => "dis: ",
-            InfoKey::Kernel   => "krn: ",
-            InfoKey::Session  => "xdg: ",
-            InfoKey::Shell    => "shl: ",
-            InfoKey::Packages => "pkg: ",
-            InfoKey::Uptime   => "upt: ",
-            _ => "invalid",
-        }
-    }
-
     pub fn as_order_str(&self) -> &str {
         match self {
             InfoKey::Ascii    => "ascii",
@@ -32,20 +21,33 @@ impl InfoKey {
             InfoKey::Shell    => "shell",
             InfoKey::Packages => "packages",
             InfoKey::Uptime   => "uptime",
-            _ => "invalid"
         }
     }
 
-    pub fn from_order_key<S: AsRef<str>>(string: S) -> InfoKey {
+    pub fn from_order_key<S: AsRef<str>>(string: S) -> Option<InfoKey> {
         match string.as_ref() {
-           "ascii"    => InfoKey::Ascii,
-           "distro"   => InfoKey::Distro,
-           "kernel"   => InfoKey::Kernel,
-           "session"  => InfoKey::Session,
-           "shell"    => InfoKey::Shell,
-           "packages" => InfoKey::Packages,
-           "uptime"   => InfoKey::Uptime,
-           _          => InfoKey::Invalid
+           "ascii"    => Some(InfoKey::Ascii),
+           "distro"   => Some(InfoKey::Distro),
+           "kernel"   => Some(InfoKey::Kernel),
+           "session"  => Some(InfoKey::Session),
+           "shell"    => Some(InfoKey::Shell),
+           "packages" => Some(InfoKey::Packages),
+           "uptime"   => Some(InfoKey::Uptime),
+           _          => None
+        }
+    }
+}
+
+impl fmt::Display for InfoKey {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            InfoKey::Ascii    => write!(f, ""),
+            InfoKey::Distro   => write!(f, "dis: "),
+            InfoKey::Kernel   => write!(f, "krn: "),
+            InfoKey::Session  => write!(f, "xdg: "),
+            InfoKey::Shell    => write!(f, "shl: "),
+            InfoKey::Packages => write!(f, "pkg: "),
+            InfoKey::Uptime   => write!(f, "upt: ")
         }
     }
 }

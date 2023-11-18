@@ -32,7 +32,7 @@ fn get_info_order() -> Vec<InfoKey> {
     let order_file_contents = read_config_file("order");
     match order_file_contents {
         Some(contents) => {
-            let custom: Vec<InfoKey> = contents.lines().map(|line| InfoKey::from_order_key(line)).collect();
+            let custom: Vec<InfoKey> = contents.lines().map(|line| InfoKey::from_order_key(line).expect(format!("Invalid info key: {line}").as_str())).collect();
             return custom;
         },
         None => ()
@@ -61,7 +61,6 @@ fn print_info(key: InfoKey, options: Options) {
         InfoKey::Shell => print_shell(color),
         InfoKey::Uptime => print_uptime(color),
         InfoKey::Packages => print_package_number(color),
-        _ => ()
     };
 }
 
@@ -86,7 +85,7 @@ fn print_distro(color: Color) {
         .strip_suffix("\"")
         .expect("Unable to strip end-quote from distro name");
 
-    println!("{}{}{}{}", color, InfoKey::Distro.as_str(), Color::Default, distro_name);
+    println!("{}{}{}{}", color, InfoKey::Distro, Color::Default, distro_name);
 }
 
 fn print_session(color: Color) {
@@ -96,7 +95,7 @@ fn print_session(color: Color) {
         } else {
             env::var("XDG_SESSION_DESKTOP")
         }.unwrap_or_else(|_| "unknown".to_string());
-    println!("{}{}{}{}", color, InfoKey::Session.as_str(), Color::Default, session);
+    println!("{}{}{}{}", color, InfoKey::Session, Color::Default, session);
 }
 
 fn print_shell(color: Color) {
@@ -106,5 +105,5 @@ fn print_shell(color: Color) {
         } else {
             "unknown".to_string()
         };
-    println!("{}{}{}{}", color, InfoKey::Shell.as_str(), Color::Default, shell);
+    println!("{}{}{}{}", color, InfoKey::Shell, Color::Default, shell);
 }

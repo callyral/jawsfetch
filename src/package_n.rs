@@ -47,5 +47,5 @@ fn get_package_number() -> usize {
 pub fn print_package_number(color: Color) {
     let package_number: usize = get_package_number();
 
-    println!("{}{}{}{}", color, InfoKey::Packages.as_str(), Color::Default, package_number);
+    println!("{}{}{}{}", color, InfoKey::Packages, Color::Default, package_number);
 }
