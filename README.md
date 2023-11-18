@@ -55,6 +55,22 @@ shell
 ascii
 ```
 
+## Example output
+
+```
+      .
+\_____)\_____
+/--v____ __`<
+        )/
+        '
+dis: Void
+krn: Linux version 6.5.10_1
+xdg: sway
+shl: zsh
+pkg: 928
+upt: 241h 13m 50s
+```
+
 ## Help
 
 ```
