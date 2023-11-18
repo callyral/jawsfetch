@@ -15,8 +15,8 @@ pub fn read_nth_line_from_file(n: usize, file_path: &str) -> String {
     let reader = BufReader::new(File::open(file_path).expect(format!("Failed to open: {file_path}").as_str()));
     reader.lines()
         .nth(n)
-        .expect(format!("Line {n} of {file_path} does not exist").as_str())
-        .expect(format!("Could not read line {n} from {file_path}").as_str())
+        .unwrap_or_else(|| panic!("Line {n} of {file_path} does not exist"))
+        .unwrap_or_else(|_| panic!("Could not read line {n} from {file_path}"))
 }
 
 pub fn read_file<S: AsRef<str> + std::convert::AsRef<std::path::Path>>(file_path: S) -> Option<String> {

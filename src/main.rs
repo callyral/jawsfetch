@@ -32,7 +32,7 @@ fn get_info_order() -> Vec<InfoKey> {
     let order_file_contents = read_config_file("order");
     match order_file_contents {
         Some(contents) => {
-            let custom: Vec<InfoKey> = contents.lines().map(|line| InfoKey::from_order_key(line).expect(format!("Invalid info key: {line}").as_str())).collect();
+            let custom: Vec<InfoKey> = contents.lines().map(|line| InfoKey::from_order_key(line).unwrap_or_else(|| panic!("Invalid info key: {line}"))).collect();
             return custom;
         },
         None => ()
