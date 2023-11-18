@@ -70,9 +70,11 @@ Options:
 
 ## To-do
 
+I don't really plan on developing these in the near future, but feel free to make a pull request.
+
 * Package amount: Fedora/dnf support
 
-This required using `dnf list installed | sed '1d' | wc -l`, meaning a second pipe.
+This requires using `dnf list installed | sed '1d' | wc -l`, meaning a second pipe.
 
 * Configuration: A config file for things like color, boldness, etc.
 
@@ -80,6 +82,12 @@ This would mean not having to pass a custom color as an argument. For now you co
 
 ## Crates used
 
-### Clap
+### [Clap](https://crates.io/crates/clap)
 
 This crate is used for argument parsing, as writing my own would've been very difficult.
+
+### [phf](https://crates.io/crates/phf)
+
+Used for a translation table between color name and Color enum.
+
+See [color.rs](src/color.rs)
