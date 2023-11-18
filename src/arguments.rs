@@ -1,4 +1,4 @@
-use crate::{Color, KernelOptions};
+use crate::{Color, KernelOptions, ShellOptions};
 
 use clap::Parser;
 
@@ -6,7 +6,8 @@ use clap::Parser;
 pub struct Options {
     pub color: Color,
     pub bold: bool,
-    pub kernel_options: KernelOptions
+    pub kernel_options: KernelOptions,
+    pub shell_options: ShellOptions
 }
 
 #[derive (Parser, Debug)]
@@ -21,5 +22,9 @@ pub struct Arguments {
 
     /// Long kernel version
     #[arg(short, long)]
-    pub kernel_long: bool
+    pub kernel_long: bool,
+
+    /// Long shell path
+    #[arg(short, long)]
+    pub shell_long: bool
 }

@@ -64,6 +64,7 @@ Options:
   -c, --color <COLOR>  Select color [default: blue]
   -b, --no-bold        Disable bold colors
   -k, --kernel-long    Long kernel version
+  -s, --shell-long     Long shell path
   -h, --help           Print help
 ```
 

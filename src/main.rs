@@ -9,6 +9,7 @@ module!(arguments);
 module!(kernel);
 module!(package_n);
 module!(uptime);
+module!(shell);
 
 use std::env;
 use clap::Parser;
@@ -20,6 +21,9 @@ fn main() {
         bold: !args.no_bold,
         kernel_options: KernelOptions {
             long: args.kernel_long
+        },
+        shell_options: ShellOptions {
+            long: args.shell_long
         }
     };
 
@@ -58,7 +62,7 @@ fn print_info(key: InfoKey, options: Options) {
         InfoKey::Distro => print_distro(color),
         InfoKey::Kernel => print_kernel(options.kernel_options, color),
         InfoKey::Session => print_session(color),
-        InfoKey::Shell => print_shell(color),
+        InfoKey::Shell => print_shell(options.shell_options, color),
         InfoKey::Uptime => print_uptime(color),
         InfoKey::Packages => print_package_number(color),
     };
@@ -96,14 +100,4 @@ fn print_session(color: Color) {
             env::var("XDG_SESSION_DESKTOP")
         }.unwrap_or_else(|_| "unknown".to_string());
     println!("{}{}{}{}", color, InfoKey::Session, Color::Default, session);
-}
-
-fn print_shell(color: Color) {
-    let shell: String =
-        if env::var("SHELL").is_ok() {
-            env::var("SHELL").unwrap()
-        } else {
-            "unknown".to_string()
-        };
-    println!("{}{}{}{}", color, InfoKey::Shell, Color::Default, shell);
 }
