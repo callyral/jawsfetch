@@ -90,13 +90,13 @@ Options:
 
 I don't really plan on developing these in the near future, but feel free to make a pull request.
 
-* Package amount: Fedora/dnf support
+**Package amount:** Fedora/dnf support
 
-This requires using `dnf list installed | sed '1d' | wc -l`, meaning a second pipe.
+* This requires using `dnf list installed | sed '1d' | wc -l`, meaning a second pipe.
 
-* Configuration: A config file for things like color, boldness, etc.
+**Configuration:** A config file for things like color, boldness, etc.
 
-This would mean not having to pass a custom color as an argument. For now you could make a shell alias to something like `jawsfetch -bc red`.
+* This would mean not having to pass a custom color as an argument. For now you could make a shell alias to something like `jawsfetch -bc red`.
 
 ## Crates used
 
