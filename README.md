@@ -6,54 +6,56 @@ Shark-themed (by default) Linux system information tool written in Rust
 
 ### Keys
 
-* Ascii art
+**Ascii art**
 
-* Distro name
+**Distro name**
 
-From `/etc/os-release`
+* From `/etc/os-release`
 
-* Kernel version
+**Kernel version**
 
-From `/proc/version`
+* From `/proc/version`
 
-* Package amount
+**Package amount**
 
-Support for dpkg, pacman and xbps.
+* Support for dpkg, pacman and xbps.
 
-* Shell
+**Shell**
 
-From `$SHELL` environment variable.
+* From `$SHELL` environment variable.
 
-* Uptime
+**Uptime**
 
-From `/proc/uptime`
+* From `/proc/uptime`
 
-* XDG Session
+**XDG Session**
 
-From either `$XDG_CURRENT_DESKTOP` or `$XDG_SESSION_DESKTOP`.
+* From either `$XDG_CURRENT_DESKTOP` or `$XDG_SESSION_DESKTOP`.
 
 ### Configuration
 
-* Ascii File
+**Ascii File**
 
-Located at `$XDG_CONFIG_HOME/jawsfetch/ascii` or `~/.config/jawsfetch/ascii`
+* Located at `$XDG_CONFIG_HOME/jawsfetch/ascii` or `~/.config/jawsfetch/ascii`
 
-Formatted as plain text. Just put whatever ascii art inside it and it should work.
+* Formatted as plain text. Just put whatever ascii art inside it and it should work.
 
-* Order File
+**Order File**
 
-Located at `$XDG_CONFIG_HOME/jawsfetch/order` or `~/.config/jawsfetch/order`
+* Located at `$XDG_CONFIG_HOME/jawsfetch/order` or `~/.config/jawsfetch/order`
 
-Customize the order that each key appears in.
+* Customize the order that each key appears in.
 
-Example:
+* Valid keys: ascii, distro, kernel, session, shell, packages, uptime
 
-```
-ascii
-session
-shell
-ascii
-```
+* Example:
+
+  ```
+  ascii
+  session
+  shell
+  ascii
+  ```
 
 ## Example output
 
