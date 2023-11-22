@@ -2,6 +2,8 @@ use std::fs::{self, File};
 use std::io::{BufRead, BufReader};
 use std::env;
 
+use home::home_dir;
+
 #[macro_export]
 macro_rules! module {
     // Use all items in module
@@ -29,10 +31,10 @@ pub fn read_file<S: AsRef<str> + std::convert::AsRef<std::path::Path>>(file_path
 
 pub fn read_config_file<S: AsRef<str>>(name: S) -> Option<String> {
     let path =
-        match env::var("XDG_CONFIG_HOME").is_ok() {
-            // Ok to use unwrap here since it is already known that $XDG_CONFIG_HOME is set
-            true => env::var("XDG_CONFIG_HOME").unwrap() + "/jawsfetch/" + name.as_ref(),
-            false => env::var("HOME").expect("No such environment variable: $HOME") + "/.config/jawsfetch/" + name.as_ref(),
+        match env::var("XDG_CONFIG_HOME") {
+            // TODO: use a better method to append to path
+            Ok(v) => v + "/jawsfetch/" + name.as_ref(),
+            Err(_) => home_dir()?.into_os_string().into_string().expect("Failed to fetch home directory") + "/.config/jawsfetch/" + name.as_ref(),
         };
     read_file(path)
 }
