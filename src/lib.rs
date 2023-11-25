@@ -14,7 +14,7 @@ macro_rules! module {
 }
 
 pub fn read_nth_line_from_file(n: usize, file_path: &str) -> String {
-    let reader = BufReader::new(File::open(file_path).expect(format!("Failed to open: {file_path}").as_str()));
+    let reader = BufReader::new(File::open(file_path).unwrap_or_else(|_| panic!("Failed to open: {file_path}")));
     reader.lines()
         .nth(n)
         .unwrap_or_else(|| panic!("Line {n} of {file_path} does not exist"))

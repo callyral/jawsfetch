@@ -12,18 +12,6 @@ pub enum InfoKey {
 }
 
 impl InfoKey {
-    pub fn as_order_str(&self) -> &str {
-        match self {
-            InfoKey::Ascii    => "ascii",
-            InfoKey::Distro   => "distro",
-            InfoKey::Kernel   => "kernel",
-            InfoKey::Session  => "session",
-            InfoKey::Shell    => "shell",
-            InfoKey::Packages => "packages",
-            InfoKey::Uptime   => "uptime",
-        }
-    }
-
     pub fn from_order_key<S: AsRef<str>>(string: S) -> Option<InfoKey> {
         match string.as_ref() {
            "ascii"    => Some(InfoKey::Ascii),

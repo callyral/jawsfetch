@@ -34,15 +34,17 @@ fn main() {
 
 fn get_info_order() -> Vec<InfoKey> {
     let order_file_contents = read_config_file("order");
-    match order_file_contents {
-        Some(contents) => {
-            let custom: Vec<InfoKey> = contents.lines().map(|line| InfoKey::from_order_key(line).unwrap_or_else(|| panic!("Invalid info key: {line}"))).collect();
-            return custom;
-        },
-        None => ()
+    if let Some(contents) = order_file_contents {
+        let custom: Vec<InfoKey> = contents
+            .lines()
+            .map(|line|
+                 InfoKey::from_order_key(line)
+                 .unwrap_or_else(|| panic!("Invalid info key: {line}")))
+            .collect();
+        return custom;
     }
 
-    return vec![InfoKey::Ascii,
+    vec![InfoKey::Ascii,
                 InfoKey::Distro,
                 InfoKey::Kernel,
                 InfoKey::Session,
@@ -81,12 +83,12 @@ fn print_ascii(color: Color) {
 fn print_distro(color: Color) {
     let distro_file_path: &str = "/etc/os-release";
     let distro_line = read_nth_line_from_file(0, distro_file_path);
-    let distro_tokens: Vec<&str> = distro_line.split("=").collect();
+    let distro_tokens: Vec<&str> = distro_line.split('=').collect();
 
     let distro_name: &str = distro_tokens[1]
-        .strip_prefix("\"")
+        .strip_prefix('\"')
         .expect("Unable to strip quote from distro name")
-        .strip_suffix("\"")
+        .strip_suffix('\"')
         .expect("Unable to strip end-quote from distro name");
 
     println!("{}{}{}{}", color, InfoKey::Distro, Color::Default, distro_name);

@@ -19,7 +19,7 @@ pub fn print_shell(options: ShellOptions, color: Color) {
         if options.long {
             local
         } else {
-            local.split("/").last().expect("Unable to get last element of shell path").to_string()
+            local.split('/').last().expect("Unable to get last element of shell path").to_string()
         }
     };
 

@@ -74,7 +74,7 @@ impl Color {
                 return Some(key);
             }
         }
-        return None;
+        None
     }
 
     pub fn from_string<S: AsRef<str>>(string: S) -> Color {
