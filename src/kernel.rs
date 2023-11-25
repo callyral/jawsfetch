@@ -6,15 +6,14 @@ pub struct KernelOptions {
 }
 
 pub fn print_kernel(options: KernelOptions, color: Color) {
-    if options.long {
-        println!("{}{}{}{}", color, InfoKey::Kernel, Color::Default, read_nth_line_from_file(0, "/proc/version"));
-        return;
-    }
-
     let kernel_line = read_nth_line_from_file(0, "/proc/version");
-    let kernel_tokens: Vec<&str> = kernel_line.split(' ').collect();
 
-    print!("{}{}{}", color, InfoKey::Kernel, Color::Default);
-    kernel_tokens[0..3].iter().for_each(|str| print!("{} ", str));
-    println!();
+    if options.long {
+        println!("{}{}{}{}", color, InfoKey::Kernel, Color::Default, kernel_line);
+    } else {
+        let kernel_tokens: Vec<&str> = kernel_line.split(' ').collect();
+        let kernel_shortened: &str = &kernel_tokens[0..3].join(" ");
+
+        println!("{}{}{}{}", color, InfoKey::Kernel, Color::Default, kernel_shortened);
+    }
 }

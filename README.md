@@ -2,6 +2,10 @@
 
 Shark-themed (by default) Linux system information tool written in Rust
 
+## Notice
+
+As of now, the program may panic if it finds certain things aren't present, such as the `SHELL` environment variable.
+
 ## Features
 
 ### Keys
@@ -22,7 +26,7 @@ Shark-themed (by default) Linux system information tool written in Rust
 
 **Shell**
 
-* From `$SHELL` environment variable.
+* From `SHELL` environment variable.
 
 **Uptime**
 
@@ -100,11 +104,15 @@ I don't really plan on developing these in the near future, but feel free to mak
 
 ## Crates used
 
-### [Clap](https://crates.io/crates/clap)
+### [clap](https://lib.rs/crates/clap)
 
 This crate is used for argument parsing, as writing my own would've been very difficult.
 
-### [phf](https://crates.io/crates/phf)
+### [home](https://lib.rs/crates/home)
+
+Used to get the home directory
+
+### [phf](https://lib.rs/crates/phf)
 
 Used for a translation table between color name and Color enum.
 

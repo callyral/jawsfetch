@@ -10,16 +10,16 @@ pub struct ShellOptions {
 pub fn print_shell(options: ShellOptions, color: Color) {
     let shell: String = {
         let local: String =
-            if env::var("SHELL").is_ok() {
-                env::var("SHELL").unwrap()
+            if let Ok(sh) = env::var("SHELL") {
+                sh
             } else {
-                "unknown".to_string()
+                panic!("SHELL is not defined");
             };
 
         if options.long {
             local
         } else {
-            local.split('/').last().expect("Unable to get last element of shell path").to_string()
+            local.split('/').last().expect("Unable to shorten shell path").to_string()
         }
     };
 
