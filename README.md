@@ -1,6 +1,6 @@
 # jawsfetch
 
-Shark-themed (by default) Linux system information tool written in Rust
+Shark-themed (by default) Linux system information tool written in Rust.
 
 ## Notice
 
@@ -14,11 +14,11 @@ As of now, the program may panic if it finds certain things aren't present, such
 
 **Distro name**
 
-* From `/etc/os-release`
+* From `/etc/os-release`.
 
 **Kernel version**
 
-* From `/proc/version`
+* From `/proc/version`.
 
 **Package amount**
 
@@ -30,7 +30,7 @@ As of now, the program may panic if it finds certain things aren't present, such
 
 **Uptime**
 
-* From `/proc/uptime`
+* From `/proc/uptime`.
 
 **XDG Session**
 
@@ -40,13 +40,13 @@ As of now, the program may panic if it finds certain things aren't present, such
 
 **Ascii File**
 
-* Located at `$XDG_CONFIG_HOME/jawsfetch/ascii` or `~/.config/jawsfetch/ascii`
+* Located at `$XDG_CONFIG_HOME/jawsfetch/ascii` or `~/.config/jawsfetch/ascii`.
 
 * Formatted as plain text. Just put whatever ascii art inside it and it should work.
 
 **Order File**
 
-* Located at `$XDG_CONFIG_HOME/jawsfetch/order` or `~/.config/jawsfetch/order`
+* Located at `$XDG_CONFIG_HOME/jawsfetch/order` or `~/.config/jawsfetch/order`.
 
 * Customize the order that each key appears in.
 
@@ -110,4 +110,4 @@ This crate is used for argument parsing, as writing my own would've been very di
 
 ### [home](https://lib.rs/crates/home)
 
-Used to get the home directory
+Used to get the home directory.
