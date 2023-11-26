@@ -1,4 +1,7 @@
 use std::fmt;
+use std::str::FromStr;
+
+pub struct ParseInfoKeyError;
 
 #[derive (Clone, Copy)]
 pub enum InfoKey {
@@ -11,21 +14,6 @@ pub enum InfoKey {
     Uptime
 }
 
-impl InfoKey {
-    pub fn from_order_key<S: AsRef<str>>(string: S) -> Option<InfoKey> {
-        match string.as_ref() {
-           "ascii"    => Some(InfoKey::Ascii),
-           "distro"   => Some(InfoKey::Distro),
-           "kernel"   => Some(InfoKey::Kernel),
-           "session"  => Some(InfoKey::Session),
-           "shell"    => Some(InfoKey::Shell),
-           "packages" => Some(InfoKey::Packages),
-           "uptime"   => Some(InfoKey::Uptime),
-           _          => None
-        }
-    }
-}
-
 impl fmt::Display for InfoKey {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
@@ -36,6 +24,22 @@ impl fmt::Display for InfoKey {
             InfoKey::Shell    => write!(f, "shl: "),
             InfoKey::Packages => write!(f, "pkg: "),
             InfoKey::Uptime   => write!(f, "upt: ")
+        }
+    }
+}
+
+impl FromStr for InfoKey {
+    type Err = ParseInfoKeyError;
+    fn from_str(k: &str) -> Result<Self, Self::Err> {
+        match k {
+           "ascii"    => Ok(InfoKey::Ascii),
+           "distro"   => Ok(InfoKey::Distro),
+           "kernel"   => Ok(InfoKey::Kernel),
+           "session"  => Ok(InfoKey::Session),
+           "shell"    => Ok(InfoKey::Shell),
+           "packages" => Ok(InfoKey::Packages),
+           "uptime"   => Ok(InfoKey::Uptime),
+           _          => Err(ParseInfoKeyError)
         }
     }
 }

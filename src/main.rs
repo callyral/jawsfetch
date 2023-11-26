@@ -12,12 +12,13 @@ module!(uptime);
 module!(shell);
 
 use std::env;
+use std::str::FromStr;
 use clap::Parser;
 
 fn main() {
     let args = Arguments::parse();
     let options = Options {
-        color: Color::from_string(args.color.as_str()),
+        color: Color::from_str(&args.color).unwrap_or(Color::Default),
         bold: !args.no_bold,
         kernel_options: KernelOptions {
             long: args.kernel_long
@@ -38,8 +39,8 @@ fn get_info_order() -> Vec<InfoKey> {
         let custom: Vec<InfoKey> = contents
             .lines()
             .map(|line|
-                 InfoKey::from_order_key(line)
-                 .unwrap_or_else(|| panic!("Invalid info key: {line}")))
+                 InfoKey::from_str(line)
+                 .unwrap_or_else(|_| panic!("Invalid info key: {line}")))
             .collect();
         return custom;
     }
@@ -54,11 +55,11 @@ fn get_info_order() -> Vec<InfoKey> {
 }
 
 fn print_info(key: InfoKey, options: Options) {
-    let color =
-        match options.bold {
-            true => options.color.as_bold(),
-            false => options.color
-        };
+    let color = if options.bold {
+        options.color.bold()
+    } else {
+        options.color
+    };
     match key {
         InfoKey::Ascii => print_ascii(color),
         InfoKey::Distro => print_distro(color),

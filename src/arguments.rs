@@ -13,7 +13,7 @@ pub struct Options {
 #[derive (Parser, Debug)]
 pub struct Arguments {
     /// Select color
-    #[arg(short, long, default_value_t = String::from(Color::Blue.as_str().unwrap()))]
+    #[arg(short, long, default_value_t = String::from(Color::Blue))]
     pub color: String,
 
     /// Disable bold colors

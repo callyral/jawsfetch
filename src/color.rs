@@ -1,5 +1,6 @@
-use std::fmt;
-use phf::phf_map;
+use std::{fmt, str::FromStr};
+
+pub struct ParseColorError;
 
 #[derive (Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Color {
@@ -22,34 +23,11 @@ pub enum Color {
     BoldCyan,
     BoldWhite,
     BoldDefault,
-    BoldReset,
+    BoldReset
 }
 
 impl Color {
-    const TRANSLATION: phf::Map<&'static str, Color> = phf_map! {
-        "black"   => Color::Black,
-        "red"     => Color::Red,
-        "green"   => Color::Green,
-        "yellow"  => Color::Yellow,
-        "blue"    => Color::Blue,
-        "magenta" => Color::Magenta,
-        "cyan"    => Color::Cyan,
-        "white"   => Color::White,
-        "default" => Color::Default,
-        "reset"   => Color::Reset,
-        "bold_black"   => Color::BoldBlack,
-        "bold_red"     => Color::BoldRed,
-        "bold_green"   => Color::BoldGreen,
-        "bold_yellow"  => Color::BoldYellow,
-        "bold_blue"    => Color::BoldBlue,
-        "bold_magenta" => Color::BoldMagenta,
-        "bold_cyan"    => Color::BoldCyan,
-        "bold_white"   => Color::BoldWhite,
-        "bold_default" => Color::BoldDefault,
-        "bold_reset"   => Color::BoldReset,
-    };
-
-    pub fn as_bold(&self) -> Color {
+    pub fn bold(&self) -> Color {
         match self {
             Color::Black   => Color::BoldBlack,
             Color::Red     => Color::BoldRed,
@@ -62,26 +40,6 @@ impl Color {
             Color::Default => Color::BoldDefault,
             Color::Reset   => Color::BoldReset,
             _ => *self
-        }
-    }
-
-    pub fn as_str(&self) -> Option<&str> {
-        let t = Self::TRANSLATION;
-        for key in t.keys() {
-            let value = t.get(key);
-            // Unwrap used because `key` is known to be a valid dictionary key
-            if value.unwrap() == self {
-                return Some(key);
-            }
-        }
-        None
-    }
-
-    pub fn from_string<S: AsRef<str>>(string: S) -> Color {
-        let t = Self::TRANSLATION;
-        match t.get(string.as_ref()) {
-            Some(&color) => color,
-            None => Color::Default
         }
     }
 }
@@ -113,17 +71,74 @@ impl fmt::Display for Color {
     }
 }
 
+impl FromStr for Color {
+    type Err = ParseColorError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        // Case insensitive
+        match s.to_lowercase().as_str() {
+            "black"   => Ok(Color::Black),
+            "red"     => Ok(Color::Red),
+            "green"   => Ok(Color::Green),
+            "yellow"  => Ok(Color::Yellow),
+            "blue"    => Ok(Color::Blue),
+            "magenta" => Ok(Color::Magenta),
+            "cyan"    => Ok(Color::Cyan),
+            "white"   => Ok(Color::White),
+            "default" => Ok(Color::Default),
+            "reset"   => Ok(Color::Reset),
+            "bold_black"   => Ok(Color::BoldBlack),
+            "bold_red"     => Ok(Color::BoldRed),
+            "bold_green"   => Ok(Color::BoldGreen),
+            "bold_yellow"  => Ok(Color::BoldYellow),
+            "bold_blue"    => Ok(Color::BoldBlue),
+            "bold_magenta" => Ok(Color::BoldMagenta),
+            "bold_cyan"    => Ok(Color::BoldCyan),
+            "bold_white"   => Ok(Color::BoldWhite),
+            "bold_default" => Ok(Color::BoldDefault),
+            "bold_reset"   => Ok(Color::BoldReset),
+            _ => Err(ParseColorError)
+        }
+    }
+}
+
+impl From<Color> for String {
+    fn from(col: Color) -> Self {
+        match col {
+            Color::Black   => "black",
+            Color::Red     => "red",
+            Color::Green   => "green",
+            Color::Yellow  => "yellow",
+            Color::Blue    => "blue",
+            Color::Magenta => "magenta",
+            Color::Cyan    => "cyan",
+            Color::White   => "white",
+            Color::Default => "default",
+            Color::Reset   => "reset",
+            Color::BoldBlack   => "bold_black",
+            Color::BoldRed     => "bold_red",
+            Color::BoldGreen   => "bold_green",
+            Color::BoldYellow  => "bold_yellow",
+            Color::BoldBlue    => "bold_blue",
+            Color::BoldMagenta => "bold_magenta",
+            Color::BoldCyan    => "bold_cyan",
+            Color::BoldWhite   => "bold_white",
+            Color::BoldDefault => "bold_default",
+            Color::BoldReset   => "bold_reset"
+        }.to_string()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn as_bold() {
-        assert_eq!(Color::Magenta.as_bold(), Color::BoldMagenta);
-        assert_eq!(Color::BoldCyan.as_bold(), Color::BoldCyan);
+        assert_eq!(Color::Magenta.bold(), Color::BoldMagenta);
+        assert_eq!(Color::BoldCyan.bold(), Color::BoldCyan);
     }
 
     #[test]
     fn as_str() {
-        assert_eq!(Color::Blue.as_str(), Some("blue"));
+        assert_eq!(String::from(Color::Blue), String::from("blue"));
     }
 }
