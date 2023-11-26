@@ -1,6 +1,5 @@
 use jawsfetch::module;
 use jawsfetch::read_config_file;
-use jawsfetch::read_nth_line_from_file;
 
 module!(arguments);
 module!(color);
@@ -10,8 +9,9 @@ module!(package_n);
 module!(shell);
 module!(uptime);
 
+use crate::{ascii::*, distro::*, session::*};
+
 use clap::Parser;
-use std::env;
 use std::str::FromStr;
 
 fn main() {
@@ -34,13 +34,15 @@ fn get_info_order() -> Vec<InfoKey> {
         return custom;
     }
 
-    vec![InfoKey::Ascii,
-                InfoKey::Distro,
-                InfoKey::Kernel,
-                InfoKey::Session,
-                InfoKey::Shell,
-                InfoKey::Packages,
-                InfoKey::Uptime]
+    vec![
+        InfoKey::Ascii,
+        InfoKey::Distro,
+        InfoKey::Kernel,
+        InfoKey::Session,
+        InfoKey::Shell,
+        InfoKey::Packages,
+        InfoKey::Uptime
+    ]
 }
 
 fn print_info(key: InfoKey, args: &Arguments) {
@@ -61,36 +63,53 @@ fn print_info(key: InfoKey, args: &Arguments) {
     };
 }
 
-fn print_ascii(color: Color) {
-    let ascii: String = read_config_file("ascii")
-        .unwrap_or(r"      .
-\_____)\_____
-/--v____ __`<
-        )/
-        '".to_string() + "\n");
-    print!(r"{}{}{}", color, ascii, Color::Default);
+mod ascii {
+    use crate::Color;
+    use jawsfetch::read_config_file;
+
+    pub fn print_ascii(color: Color) {
+        let ascii: String = read_config_file("ascii")
+            .unwrap_or(r"      .
+    \_____)\_____
+    /--v____ __`<
+            )/
+            '".to_string() + "\n");
+        print!(r"{}{}{}", color, ascii, Color::Default);
+    }
 }
 
-fn print_distro(color: Color) {
-    let distro_file_path: &str = "/etc/os-release";
-    let distro_line = read_nth_line_from_file(0, distro_file_path);
-    let distro_tokens: Vec<&str> = distro_line.split('=').collect();
+mod distro {
+    use crate::Color;
+    use crate::InfoKey;
+    use jawsfetch::read_nth_line_from_file;
 
-    let distro_name: &str = distro_tokens[1]
-        .strip_prefix('\"')
-        .expect("Unable to strip quote from distro name")
-        .strip_suffix('\"')
-        .expect("Unable to strip end-quote from distro name");
+    pub fn print_distro(color: Color) {
+        let distro_file_path: &str = "/etc/os-release";
+        let distro_line = read_nth_line_from_file(0, distro_file_path);
+        let distro_tokens: Vec<&str> = distro_line.split('=').collect();
 
-    println!("{}{}{}{}", color, InfoKey::Distro, Color::Default, distro_name);
+        let distro_name: &str = distro_tokens[1]
+            .strip_prefix('\"')
+            .expect("Unable to strip quote from distro name")
+            .strip_suffix('\"')
+            .expect("Unable to strip end-quote from distro name");
+
+        println!("{}{}{}{}", color, InfoKey::Distro, Color::Default, distro_name);
+    }
 }
 
-fn print_session(color: Color) {
-    let session: String =
-        if env::var("XDG_CURRENT_DESKTOP").is_ok() {
-            env::var("XDG_CURRENT_DESKTOP")
-        } else {
-            env::var("XDG_SESSION_DESKTOP")
-        }.unwrap_or_else(|_| "unknown".to_string());
-    println!("{}{}{}{}", color, InfoKey::Session, Color::Default, session);
+mod session {
+    use crate::Color;
+    use crate::InfoKey;
+    use std::env;
+
+    pub fn print_session(color: Color) {
+        let session: String =
+            if env::var("XDG_CURRENT_DESKTOP").is_ok() {
+                env::var("XDG_CURRENT_DESKTOP")
+            } else {
+                env::var("XDG_SESSION_DESKTOP")
+            }.unwrap_or_else(|_| "unknown".to_string());
+        println!("{}{}{}{}", color, InfoKey::Session, Color::Default, session);
+    }
 }

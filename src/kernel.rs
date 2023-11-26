@@ -1,4 +1,6 @@
-use crate::{Color, InfoKey, read_nth_line_from_file};
+use crate::Color;
+use crate::InfoKey;
+use jawsfetch::read_nth_line_from_file;
 
 pub fn print_kernel(long: bool, color: Color) {
     let kernel_line = read_nth_line_from_file(0, "/proc/version");

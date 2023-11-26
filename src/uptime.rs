@@ -1,6 +1,6 @@
-use crate::read_nth_line_from_file;
 use crate::Color;
 use crate::InfoKey;
+use jawsfetch::read_nth_line_from_file;
 
 fn format_seconds(raw_seconds: f32) -> String {
     // During conversion, out-of-range values are saturated and NaN is zero. I believe this is
