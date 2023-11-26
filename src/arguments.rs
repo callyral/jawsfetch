@@ -1,14 +1,6 @@
-use crate::{Color, KernelOptions, ShellOptions};
+use crate::Color;
 
 use clap::Parser;
-
-#[derive (Clone, Copy)]
-pub struct Options {
-    pub color: Color,
-    pub bold: bool,
-    pub kernel_options: KernelOptions,
-    pub shell_options: ShellOptions
-}
 
 #[derive (Parser, Debug)]
 pub struct Arguments {

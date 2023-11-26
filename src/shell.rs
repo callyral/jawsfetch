@@ -2,12 +2,7 @@ use crate::{Color, InfoKey};
 
 use std::env;
 
-#[derive (Clone, Copy)]
-pub struct ShellOptions {
-    pub long: bool
-}
-
-pub fn print_shell(options: ShellOptions, color: Color) {
+pub fn print_shell(long: bool, color: Color) {
     let shell: String = {
         let local: String =
             if let Ok(sh) = env::var("SHELL") {
@@ -16,9 +11,11 @@ pub fn print_shell(options: ShellOptions, color: Color) {
                 panic!("SHELL is not defined");
             };
 
-        if options.long {
+        if long {
             local
         } else {
+            // TODO: make this use std::path::Path
+            // something like Path::new(local).file_stem()
             local.split('/').last().expect("Unable to shorten shell path").to_string()
         }
     };

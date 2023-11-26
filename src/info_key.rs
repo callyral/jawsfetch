@@ -1,6 +1,7 @@
 use std::fmt;
 use std::str::FromStr;
 
+// MAYBE: rename this? not sure if properly named
 pub struct ParseInfoKeyError;
 
 #[derive (Clone, Copy)]

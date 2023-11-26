@@ -111,9 +111,3 @@ This crate is used for argument parsing, as writing my own would've been very di
 ### [home](https://lib.rs/crates/home)
 
 Used to get the home directory
-
-### [phf](https://lib.rs/crates/phf)
-
-Used for a translation table between color name and Color enum.
-
-See [color.rs](src/color.rs)

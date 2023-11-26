@@ -1,36 +1,25 @@
-use jawsfetch::read_nth_line_from_file;
-use jawsfetch::read_config_file;
 use jawsfetch::module;
+use jawsfetch::read_config_file;
+use jawsfetch::read_nth_line_from_file;
 
+module!(arguments);
 module!(color);
 module!(info_key);
-module!(arguments);
-
 module!(kernel);
 module!(package_n);
-module!(uptime);
 module!(shell);
+module!(uptime);
 
+use clap::Parser;
 use std::env;
 use std::str::FromStr;
-use clap::Parser;
 
 fn main() {
     let args = Arguments::parse();
-    let options = Options {
-        color: Color::from_str(&args.color).unwrap_or(Color::Default),
-        bold: !args.no_bold,
-        kernel_options: KernelOptions {
-            long: args.kernel_long
-        },
-        shell_options: ShellOptions {
-            long: args.shell_long
-        }
-    };
 
     let info_order: Vec<InfoKey> = get_info_order();
 
-    info_order.iter().for_each(|k| print_info(*k, options));
+    info_order.iter().for_each(|k| print_info(*k, &args));
 }
 
 fn get_info_order() -> Vec<InfoKey> {
@@ -54,19 +43,20 @@ fn get_info_order() -> Vec<InfoKey> {
                 InfoKey::Uptime]
 }
 
-fn print_info(key: InfoKey, options: Options) {
-    let color = if options.bold {
-        options.color.bold()
+fn print_info(key: InfoKey, args: &Arguments) {
+    let color = if args.no_bold {
+        Color::from_str(&args.color).unwrap_or(Color::Default)
     } else {
-        options.color
+        Color::from_str(&args.color).unwrap_or(Color::Default).bold()
     };
+
     match key {
-        InfoKey::Ascii => print_ascii(color),
-        InfoKey::Distro => print_distro(color),
-        InfoKey::Kernel => print_kernel(options.kernel_options, color),
-        InfoKey::Session => print_session(color),
-        InfoKey::Shell => print_shell(options.shell_options, color),
-        InfoKey::Uptime => print_uptime(color),
+        InfoKey::Ascii    => print_ascii(color),
+        InfoKey::Distro   => print_distro(color),
+        InfoKey::Kernel   => print_kernel(args.kernel_long, color),
+        InfoKey::Session  => print_session(color),
+        InfoKey::Shell    => print_shell(args.shell_long, color),
+        InfoKey::Uptime   => print_uptime(color),
         InfoKey::Packages => print_package_number(color),
     };
 }
