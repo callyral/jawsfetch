@@ -1,5 +1,6 @@
 use std::{fmt, str::FromStr};
 
+#[derive(Debug, PartialEq)]
 pub struct ParseColorError;
 
 #[derive (Clone, Copy, Debug, Eq, PartialEq)]
@@ -27,7 +28,7 @@ pub enum Color {
 }
 
 impl Color {
-    pub fn bold(&self) -> Color {
+    pub fn bold(self) -> Color {
         match self {
             Color::Black   => Color::BoldBlack,
             Color::Red     => Color::BoldRed,
@@ -39,7 +40,7 @@ impl Color {
             Color::White   => Color::BoldWhite,
             Color::Default => Color::BoldDefault,
             Color::Reset   => Color::BoldReset,
-            _ => *self
+            _ => self
         }
     }
 }
@@ -133,12 +134,29 @@ mod tests {
     use super::*;
     #[test]
     fn as_bold() {
-        assert_eq!(Color::Magenta.bold(), Color::BoldMagenta);
-        assert_eq!(Color::BoldCyan.bold(), Color::BoldCyan);
+        let magenta = Color::Magenta;
+        let bold_cyan = Color::BoldCyan;
+
+        // normal -/> normal
+        assert_ne!(magenta.bold(), Color::Magenta);
+
+        // make sure .bold() doesn't mutate
+        assert_eq!(magenta, Color::Magenta);
+
+        // normal -> bold
+        assert_eq!(magenta.bold(), Color::BoldMagenta);
+
+        // bold -> bold
+        assert_eq!(bold_cyan.bold(), Color::BoldCyan);
     }
 
     #[test]
-    fn as_str() {
+    fn color_from_string() {
+        assert_eq!(Color::from_str("blue"), Ok(Color::Blue));
+    }
+
+    #[test]
+    fn string_from_color() {
         assert_eq!(String::from(Color::Blue), String::from("blue"));
     }
 }

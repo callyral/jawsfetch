@@ -18,7 +18,7 @@ pub enum InfoKey {
 impl fmt::Display for InfoKey {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            InfoKey::Ascii    => write!(f, ""),
+            InfoKey::Ascii    => write!(f, ""), // unused
             InfoKey::Distro   => write!(f, "dis: "),
             InfoKey::Kernel   => write!(f, "krn: "),
             InfoKey::Session  => write!(f, "xdg: "),
