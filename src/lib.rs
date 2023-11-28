@@ -1,6 +1,7 @@
 use std::env;
 use std::fs::{self, File};
-use std::io::{BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
+use std::path::PathBuf;
 
 #[macro_export]
 macro_rules! module {
@@ -11,33 +12,27 @@ macro_rules! module {
     };
 }
 
-pub fn read_nth_line_from_file(n: usize, file_path: &str) -> String {
-    let reader = BufReader::new(File::open(file_path).unwrap_or_else(|_| panic!("Failed to open: {file_path}")));
+pub fn read_nth_line_from_file(n: usize, file_path: &str) -> Result<String, io::Error> {
+    let reader = BufReader::new(
+        File::open(file_path).unwrap_or_else(|_| panic!("Failed to open file '{file_path}'")),
+    );
     // TODO: make this look better
     reader
         .lines()
         .nth(n)
         .unwrap_or_else(|| panic!("Line {n} of {file_path} does not exist"))
-        .unwrap_or_else(|_| panic!("Could not read line {n} from {file_path}"))
 }
 
-pub fn read_file(file_path: &str) -> Option<String> {
-    let contents = fs::read_to_string(file_path);
-    match contents {
-        Ok(string) => Some(string),
-        Err(_) => None
-    }
-}
-
-pub fn read_config_file(name: &str) -> Option<String> {
-    let path =
-        match env::var("XDG_CONFIG_HOME") {
-            // TODO: use a better method to append to path
-            Ok(v) => v + "/jawsfetch/" + name,
-            Err(_) => home::home_dir()?
-                .into_os_string()
-                .into_string()
-                .expect("Failed to fetch home directory") + "/.config/jawsfetch/" + name,
-        };
-    read_file(&path)
+pub fn read_config_file(name: &str) -> Result<String, io::Error> {
+    let path: PathBuf = match env::var("XDG_CONFIG_HOME") {
+        Ok(v) => [v, "jawsfetch".into(), name.into()].iter().collect(),
+        Err(_) => [
+            home::home_dir().expect("Failed to fetch home directory"),
+            "/.config/jawsfetch/".into(),
+            name.into(),
+        ]
+        .iter()
+        .collect(),
+    };
+    fs::read_to_string(path)
 }

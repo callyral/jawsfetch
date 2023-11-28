@@ -24,11 +24,11 @@ fn main() {
 
 fn get_info_order() -> Vec<InfoKey> {
     let order_file_contents = read_config_file("order");
-    if let Some(contents) = order_file_contents {
+    if let Ok(contents) = order_file_contents {
         let custom: Vec<InfoKey> = contents
             .lines()
             .map(|line| {
-                 InfoKey::from_str(line).unwrap_or_else(|_| panic!("Invalid info key: {line}"))
+                InfoKey::from_str(line).unwrap_or_else(|_| panic!("Invalid info key: {line}"))
             })
             .collect();
         return custom;
@@ -41,7 +41,7 @@ fn get_info_order() -> Vec<InfoKey> {
         InfoKey::Session,
         InfoKey::Shell,
         InfoKey::Packages,
-        InfoKey::Uptime
+        InfoKey::Uptime,
     ]
 }
 
@@ -49,7 +49,9 @@ fn print_info(key: InfoKey, args: &Arguments) {
     let color = if args.no_bold {
         Color::from_str(&args.color).unwrap_or(Color::Default)
     } else {
-        Color::from_str(&args.color).unwrap_or(Color::Default).bold()
+        Color::from_str(&args.color)
+            .unwrap_or(Color::Default)
+            .bold()
     };
 
     match key {
@@ -68,12 +70,15 @@ mod ascii {
     use jawsfetch::read_config_file;
 
     pub fn print_ascii(color: Color) {
-        let ascii: String = read_config_file("ascii")
-            .unwrap_or(r"      .
+        let ascii: String = read_config_file("ascii").unwrap_or(
+            r"      .
     \_____)\_____
     /--v____ __`<
             )/
-            '".to_string() + "\n");
+            '"
+            .to_string()
+                + "\n",
+        );
         print!(r"{}{}{}", color, ascii, Color::Default);
     }
 }
@@ -84,8 +89,11 @@ mod distro {
     use jawsfetch::read_nth_line_from_file;
 
     pub fn print_distro(color: Color) {
-        let distro_file_path: &str = "/etc/os-release";
-        let distro_line = read_nth_line_from_file(0, distro_file_path);
+        let distro_file_path = "/etc/os-release";
+        let distro_line: String = match read_nth_line_from_file(0, distro_file_path) {
+            Ok(v) => v,
+            _ => return,
+        };
         let distro_tokens: Vec<&str> = distro_line.split('=').collect();
 
         let distro_name: &str = distro_tokens[1]
@@ -104,12 +112,13 @@ mod session {
     use std::env;
 
     pub fn print_session(color: Color) {
-        let session: String =
-            if env::var("XDG_CURRENT_DESKTOP").is_ok() {
-                env::var("XDG_CURRENT_DESKTOP")
-            } else {
-                env::var("XDG_SESSION_DESKTOP")
-            }.unwrap_or_else(|_| "unknown".to_string());
+        let session: String = match env::var("XDG_CURRENT_DESKTOP") {
+            Ok(v) => v,
+            _ => match env::var("XDG_SESSION_DESKTOP") {
+                Ok(v) => v,
+                _ => return,
+            },
+        };
         println!("{}{}{}{}", color, InfoKey::Session, Color::Default, session);
     }
 }

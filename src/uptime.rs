@@ -29,7 +29,10 @@ fn format_seconds(raw_seconds: f32) -> String {
 
 pub fn print_uptime(color: Color) {
     let uptime_file_path: &str = "/proc/uptime";
-    let uptime_line = read_nth_line_from_file(0, uptime_file_path);
+    let uptime_line = match read_nth_line_from_file(0, uptime_file_path) {
+        Ok(v) => v,
+        _ => return,
+    };
     let uptime_tokens: Vec<&str> = uptime_line.split(' ').collect();
 
     let raw_seconds: f32 = uptime_tokens[0].parse().expect("Failed to parse uptime into float");

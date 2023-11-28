@@ -3,7 +3,11 @@ use crate::InfoKey;
 use jawsfetch::read_nth_line_from_file;
 
 pub fn print_kernel(long: bool, color: Color) {
-    let kernel_line = read_nth_line_from_file(0, "/proc/version");
+    let kernel_file_path = "/proc/version";
+    let kernel_line: String = match read_nth_line_from_file(0, kernel_file_path) {
+        Ok(v) => v,
+        _ => return,
+    };
 
     if long {
         println!("{}{}{}{}", color, InfoKey::Kernel, Color::Default, kernel_line);
