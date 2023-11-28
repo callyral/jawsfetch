@@ -5,9 +5,9 @@ use jawsfetch::read_nth_line_from_file;
 fn format_seconds(raw_seconds: f32) -> String {
     // During conversion, out-of-range values are saturated and NaN is zero. I believe this is
     // acceptable for this use case.
-    let seconds: usize = (raw_seconds % 60.) as usize;
-    let minutes: usize = (raw_seconds / 60. % 60.) as usize;
-    let hours: usize   = (raw_seconds / 60. / 60.) as usize;
+    let seconds = (raw_seconds % 60.) as usize;
+    let minutes = (raw_seconds / 60. % 60.) as usize;
+    let hours   = (raw_seconds / 60. / 60.) as usize;
 
     match hours {
         0 => match minutes {
