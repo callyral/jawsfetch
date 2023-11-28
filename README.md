@@ -2,10 +2,6 @@
 
 Shark-themed (by default) Linux system information tool written in Rust.
 
-## Notice
-
-As of now, the program may panic if it finds certain things aren't present, such as the `SHELL` environment variable.
-
 ## Features
 
 ### Keys

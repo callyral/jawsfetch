@@ -4,12 +4,10 @@ use std::env;
 
 pub fn print_shell(long: bool, color: Color) {
     let shell: String = {
-        let local: String =
-            if let Ok(sh) = env::var("SHELL") {
-                sh
-            } else {
-                panic!("SHELL is not defined");
-            };
+        let local: String = match env::var("SHELL") {
+            Ok(v) => v,
+            _ => return,
+        };
 
         if long {
             local
