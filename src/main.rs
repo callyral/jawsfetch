@@ -27,9 +27,9 @@ fn get_info_order() -> Vec<InfoKey> {
     if let Some(contents) = order_file_contents {
         let custom: Vec<InfoKey> = contents
             .lines()
-            .map(|line|
-                 InfoKey::from_str(line)
-                 .unwrap_or_else(|_| panic!("Invalid info key: {line}")))
+            .map(|line| {
+                 InfoKey::from_str(line).unwrap_or_else(|_| panic!("Invalid info key: {line}"))
+            })
             .collect();
         return custom;
     }
