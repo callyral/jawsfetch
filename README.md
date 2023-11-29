@@ -1,3 +1,5 @@
+Archived: moved to [Codeberg](https://codeberg.org/callyral/jawsfetch)
+
 # jawsfetch
 
 Shark-themed (by default) Linux system information tool written in Rust.
